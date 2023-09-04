@@ -1,0 +1,96 @@
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define MaxLength 30
+#define NIL – 1
+typedef char DataType;
+typedef int Node;
+typedef struct{
+        Node Parent[MaxLength];
+        int MaxNode;
+        DataType Label[MaxLength];
+        }Tree;
+//Tao cay rong
+void MakeNull_Tree(Tree *T){
+     T->MaxNode=0;
+     }
+//Kiem tra cay rong
+int Empty_Tree(Tree T){
+    return T.MaxNode==0;
+}
+//Kiem tra cay day
+int Full_Tree(Tree T){
+    return (T.MaxNode == MaxLength);
+}
+//Ham xac dinh cha cua nut n tren cay T
+Node Parent(Node n, Tree T){
+     if ((Empty_Tree(T)) || (n>T.MaxNode-1))
+     return NIL;
+     else return T.Parent[n];
+     }
+//Ham xac dinh nhan cua nut n
+DataType Label(Node n, Tree T){
+         if ((Empty_Tree(T))||(n>T.MaxNode-1)){
+         printf(“\nLoi! Khong tim thay nhan!”);
+         return ‘*’;
+         }
+         else return T.Label[n];
+}
+//Ham tra ve nut goc trong cay T
+Node Root(Tree T){
+     if (!Empty_Tree(T))
+     return 0;
+     else return NIL;
+     }
+//Ham tra ve nut con trai nhat
+Node LeftMostChild(Node n, Tree T){
+     Node i=n+1;
+     int found=0;
+     if ((n<0)||(Empty_Tree(T))||(n>=T.MaxNode-1))
+     return NIL;
+     else {
+          while ((i<T.MaxNode) && (found==0))
+          if (T.Parent[i]==n) found=1;
+          else i++;
+          if (found==0) return NIL;
+          else return i;
+          }
+}
+//Ham xac dinh anh em ruot phai
+Node RightSibling(Node n, Tree T){
+     Node i=n+1;
+     if (n<0) return NIL;
+     while (i<T.MaxNode)
+     if (T.Parent[n]==T.Parent[i])
+     return i; else i++;
+     return NIL;
+     }
+//Duyet tien tu
+void PreOrder(Node n, Tree T){
+     Node i;
+     printf(“%c, “,Label(n,T));
+     i=LeftMostChild(n,T);
+     while (i!=NIL){
+           PreOrder(i,T);
+           i=RightSibling(i,T);}
+}
+//Duyet trung tu
+void InOrder(Node n, Tree T){
+     Node i=LeftMostChild(n,T);
+     if (i!=NIL) InOrder(i,T);
+     printf(“%c, “,Label(n,T));
+     i=RightSibling(i,T);
+     while (i!=NIL){
+           InOrder(i,T);
+           i=RightSibling(i,T);
+           }
+}
+//Duyet hau tu
+void PostOrder(Node n, Tree T){
+     Node i=LeftMostChild(n,T);
+     while (i!=NIL){
+           PostOrder(i,T);
+           i=RightSibling(i,T);
+           }
+     printf(“%c, “,Label(n,T));
+}
